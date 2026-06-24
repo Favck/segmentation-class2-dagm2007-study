@@ -2,6 +2,8 @@ from tqdm.notebook import tqdm
 from src.dataset import MyDataset
 from src.model import optim, DiceLoss, model, jacard
 import seaborn as sns
+import os
+import matplotlib.pyplot as plt
 import torch
 
 
