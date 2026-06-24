@@ -32,7 +32,7 @@ After fixing the soft-target evaluations and removing data augmentations from th
 
 Below is the visualization of the training phase. The model smoothly converges to a stable plateau around the 20th epoch, showing no signs of severe overfitting (validation error closely tracks the training loss).
 
-<img width="855" height="559" alt="изображение" src="https://github.com/user-attachments/assets/aaab5cab-d29d-4dbd-937e-b7eb28dace98" />
+<img width="855" height="558" alt="изображение" src="https://github.com/user-attachments/assets/338b2450-42fa-460d-82be-f98bc3e87fe2" />
 
 
 ---
