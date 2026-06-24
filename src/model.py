@@ -29,5 +29,6 @@ model = smp.Unet(
     classes=1
 )
 device = "cuda" if torch.cuda.is_available() else "cpu"
+model = model.to(device)
 jacard = JaccardIndex(threshold=0.5, task="binary", average="none")
 optim = torch.optim.AdamW(model.parameters(), 1e-2)
