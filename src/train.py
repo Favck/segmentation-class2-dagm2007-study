@@ -52,3 +52,45 @@ for epoch in tqdm(range(epochs)):
   avg_val_iou.append(val_loss_iou/len(val_loader))
   print(f"Epoch:{epoch} | Train: {avg_train_loss[-1] :.6f} | Val: {avg_val_dice[-1]:.6f} | Val: {avg_val_iou[-1]:.6f}")
 
+
+
+sns.set_theme(style="whitegrid")
+plt.figure(figsize=(10, 6))
+
+
+sns.lineplot(data=avg_train_loss, label="Train Dice Loss", marker="o")
+sns.lineplot(data=avg_val_dice, label="Val Dice Loss", marker="s")
+sns.lineplot(data=avg_val_iou, label="Val Jaccard (IoU)")
+
+
+plt.title("История обучения модели", fontsize=16, fontweight="bold")
+plt.xlabel("Эпоха", fontsize=12)
+plt.ylabel("Значение", fontsize=12)
+
+plt.legend() 
+plt.show()
+
+#PATH = ??
+seg_test = sorted(os.listdir(PATH))
+img_test = sorted(m for m in os.listdir(PATH) if m.replace(".PNG", "_label.PNG") in seg_test)
+
+data_val = MyDataset(img_test, seg_test, PATH=PATH+"/", Train=False)
+test_loader = torch.utils.data.DataLoader(data_val, batch_size=10, shuffle=False)
+
+model.eval()
+
+with torch.no_grad():
+  jac = 0
+  dice = 0
+  for X_batch, Y_batch in test_loader:
+    X_batch = X_batch.to(device)
+    Y_batch = Y_batch.to(device)
+    
+    Y_pred = model(X_batch)
+    loss_1 = jacard(torch.sigmoid(Y_pred), Y_batch)
+    loss_2 = criterion(Y_pred,Y_batch)
+    jac += loss_1.item()
+    dice += loss_2.item()
+  
+  print(f"Test Jaccard: {jac/len(test_loader):.4f}\nTest Dice: {dice/len(test_loader):.4f}")
+
